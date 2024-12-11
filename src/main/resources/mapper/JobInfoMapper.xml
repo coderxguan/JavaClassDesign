@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guan.mapper.JobInfoMapper">
+    <insert id="insertJobInfo" parameterType="com.guan.VO.JobInfo">
+        insert into job_info(job_title, company_name, salary_range, work_location, experience, education, recruit_num, publish_date, company_type)
+            VALUE(#{jobTitle}, #{companyName},#{salaryRange}, #{workLocation}, #{experience}, #{education}, #{recruitNum}, #{publishDate}, #{companyType})
+    </insert>
+
+    <update id="updateJobInfo" parameterType="com.guan.VO.JobInfo">
+        UPDATE job_info
+        <set>
+            <if test="jobTitle != null and jobTitle != ''">
+                job_title = #{jobTitle}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName}
+            </if>
+            <if test="salaryRange != null and salaryRange != ''">
+                salary_range = #{salaryRange}
+            </if>
+            <if test="workLocation != null and workLocation != ''">
+                work_location = #{workLocation}
+            </if>
+            <if test="experience != null and experience != ''">
+                experience = #{experience}
+            </if>
+            <if test="education != null and education != ''">
+                education = #{education}
+            </if>
+            <if test="recruitNum != null">
+                recruit_num = #{recruitNum}
+            </if>
+            <if test="publishDate != null and publishDate != ''">
+                publish_date = #{publishDate}
+            </if>
+            <if test="companyType != null and companyType != ''">
+                company_type = #{companyType}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteJobInfo">
+        delete from job_info where id = #{id}
+    </delete>
+
+    <select id="selectAllJobInfo" resultType="com.guan.VO.JobInfo">
+        select * from job_info
+    </select>
+
+    <select id="getJobInfoByConditions" resultType="com.guan.VO.JobInfo">
+        select * from job_info
+        <where>
+            <if test="jobTitle != null">
+                and job_title like concat('%', #{jobTitle}, '%')
+            </if>
+            <if test="workLocation != null">
+                and work_location like concat('%', #{workLocation}, '%')
+            </if>
+            <if test="education != null">
+                and education like concat('%', #{education}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="selectJobInfoByTitleAndName" resultType="com.guan.VO.JobInfo">
+        select * from job_info where job_title = #{jobTitle} and company_name = #{companyName}
+    </select>
+</mapper>
